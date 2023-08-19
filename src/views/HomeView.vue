@@ -1,4 +1,16 @@
 <script setup>
+import { useAuth0 } from "@auth0/auth0-vue"
+const { loginWithRedirect } = useAuth0();
+const handleLogin = () => {
+  loginWithRedirect()
+}
+const handleSignup = () => {
+  loginWithRedirect({
+    authorizationParams: {
+      screen_hint: "signup"
+    }
+  })
+}
 </script>
 
 <template>
@@ -14,10 +26,10 @@
         </div>
         <div class="mt-8">
           <div class="mt-6 flex gap-4">
-            <button type="button"
+            <button @click="handleLogin" type="button"
               class="inline-flex items-center rounded-md border border-transparent bg-blue-600 px-16 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Log
               in</button>
-            <button type="button"
+            <button @click="handleSignup" type="button"
               class="inline-flex items-center rounded-md border border-transparent bg-blue-600 px-16 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Sign
               up</button>
           </div>
