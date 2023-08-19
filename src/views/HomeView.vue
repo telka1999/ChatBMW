@@ -1,3 +1,138 @@
+<script setup>
+import { ref } from 'vue'
+import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import {
+  WrenchScrewdriverIcon,
+  Bars3Icon,
+  PlusIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
+
+const navigation = [
+  { name: 'Jak zainstalować światła przeciwmgielne ? wersja USA', current: true },
+  { name: 'BMW F10 520D ICMQL D019AB oraz D0157A co oznacza?', current: false },
+  { name: 'Kodowanie licznika e38 750i 2001r.', current: false },
+  { name: 'po wymianie na mask 2 w e90 nie działają przyciski od radia', current: false },
+  { name: 'Prostownik, zasilacz do diagnostyki, programowania, kodowa.', current: false },
+  { name: 'BMW e46 - Moduly FTM i BTM - aktywacja skladanych lusterek', current: false },
+]
+
+const sidebarOpen = ref(false)
+</script>
 <template>
-  <h1>This is an about page</h1>
+  <div>
+    <TransitionRoot as="template" :show="sidebarOpen">
+      <Dialog as="div" class="relative z-40 md:hidden" @close="sidebarOpen = false">
+        <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0"
+          enter-to="opacity-100" leave="transition-opacity ease-linear duration-300" leave-from="opacity-100"
+          leave-to="opacity-0">
+          <div class="fixed inset-0 bg-gray-600 bg-opacity-75" />
+        </TransitionChild>
+
+        <div class="fixed inset-0 z-40 flex">
+          <TransitionChild as="template" enter="transition ease-in-out duration-300 transform"
+            enter-from="-translate-x-full" enter-to="translate-x-0" leave="transition ease-in-out duration-300 transform"
+            leave-from="translate-x-0" leave-to="-translate-x-full">
+            <DialogPanel class="relative flex w-full max-w-xs flex-1 flex-col bg-white">
+              <TransitionChild as="template" enter="ease-in-out duration-300" enter-from="opacity-0"
+                enter-to="opacity-100" leave="ease-in-out duration-300" leave-from="opacity-100" leave-to="opacity-0">
+                <div class="absolute top-0 right-0 -mr-12 pt-2">
+                  <button type="button"
+                    class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    @click="sidebarOpen = false">
+                    <span class="sr-only">Close sidebar</span>
+                    <XMarkIcon class="h-6 w-6 text-white" aria-hidden="true" />
+                  </button>
+                </div>
+              </TransitionChild>
+              <div class="h-0 flex-1 overflow-y-auto pt-5 pb-4">
+                <div class="flex flex-shrink-0 items-center px-2">
+                  <div
+                    class="cursor-pointer flex items-center gap-2 border rounded-lg w-full px-2 py-3 hover:border-gray-300 hover:bg-gray-50">
+                    <PlusIcon class="h-5" />
+                    <div>New chat</div>
+                  </div>
+                </div>
+                <nav class="mt-5 space-y-1 px-2">
+                  <div v-for="item in navigation" :key="item.name"
+                    :class="[item.current ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'truncate group flex items-center px-2 py-3 text-base rounded-md']">
+                    <component :is="WrenchScrewdriverIcon"
+                      :class="[item.current ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-500', 'mr-4 flex-shrink-0 h-5 w-5']"
+                      aria-hidden="true" />
+                    {{ item.name }}
+                  </div>
+                </nav>
+              </div>
+              <div class="flex flex-shrink-0 border-t border-gray-200 p-2">
+                <div class="cursor-pointer w-full group block flex-shrink-0 p-2 rounded-lg hover:bg-gray-50">
+                  <div class="flex items-center">
+                    <div>
+                      <img class="inline-block h-10 w-10 rounded-full"
+                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        alt="" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-base truncate text-gray-700 group-hover:text-gray-900">telka199909@gmail.com</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </DialogPanel>
+          </TransitionChild>
+        </div>
+      </Dialog>
+    </TransitionRoot>
+    <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
+      <!-- Sidebar component, swap this element with another sidebar if you like -->
+      <div class="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white">
+        <div class="py-4">
+          <div class="flex flex-shrink-0 items-center px-2">
+            <div
+              class="cursor-pointer flex items-center gap-2 border rounded-lg w-full px-2 py-3 hover:border-gray-300 hover:bg-gray-50">
+              <PlusIcon class="h-4" />
+              <div class="text-sm">New chat</div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-1 flex-col overflow-y-auto py-4 border-t">
+          <nav class="flex-1 space-y-1 bg-white px-2">
+            <div v-for="item in navigation" :key="item.name"
+              :class="[item.current ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'truncate group flex items-center px-2 py-3 text-sm rounded-md']">
+              <component :is="WrenchScrewdriverIcon"
+                :class="[item.current ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-500', 'mr-3 flex-shrink-0 h-4 w-4']"
+                aria-hidden="true" />
+              {{ item.name }}
+            </div>
+          </nav>
+        </div>
+        <div class="flex flex-shrink-0 border-t border-gray-200 p-2">
+          <div class="cursor-pointer group block w-full flex-shrink-0 rounded-lg p-2 hover:bg-gray-50">
+            <div class="flex items-center">
+              <div>
+                <img class="inline-block h-9 w-9 rounded-full"
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  alt="" />
+              </div>
+              <div class="ml-3">
+                <p class="text-sm truncate text-gray-700 group-hover:text-gray-900">telka199909@gmail.com</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-1 flex-col md:pl-64">
+      <div class="sticky top-0 z-10 bg-gray-100 pl-1 pt-1 sm:pl-3 sm:pt-3 md:hidden">
+        <button type="button"
+          class="-ml-0.5 -mt-0.5 inline-flex h-12 w-12 items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+          @click="sidebarOpen = true">
+          <span class="sr-only">Open sidebar</span>
+          <Bars3Icon class="h-6 w-6" aria-hidden="true" />
+        </button>
+      </div>
+      <main class="flex-1">
+        
+      </main>
+    </div>
+  </div>
 </template>
