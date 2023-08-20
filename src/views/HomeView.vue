@@ -59,11 +59,11 @@ const sidebarOpen = ref(false)
                 </div>
                 <nav class="mt-5 space-y-1 px-2">
                   <div v-for="item in navigation" :key="item.name"
-                    :class="[item.current ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'truncate group flex items-center px-2 py-3 text-base rounded-md']">
+                    :class="[item.current ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center px-2 py-3 text-base rounded-md']">
                     <component :is="WrenchScrewdriverIcon"
                       :class="[item.current ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-500', 'mr-4 flex-shrink-0 h-5 w-5']"
                       aria-hidden="true" />
-                    {{ item.name }}
+                    <p class="truncate">{{ item.name }}</p>
                   </div>
                 </nav>
               </div>
@@ -100,11 +100,11 @@ const sidebarOpen = ref(false)
         <div class="flex flex-1 flex-col overflow-y-auto py-4 border-t">
           <nav class="flex-1 space-y-1 bg-white px-2">
             <div v-for="item in navigation" :key="item.name"
-              :class="[item.current ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'truncate group flex items-center px-2 py-3 text-sm rounded-md']">
+              :class="[item.current ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center px-2 py-3 text-sm rounded-md']">
               <component :is="WrenchScrewdriverIcon"
                 :class="[item.current ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-500', 'mr-3 flex-shrink-0 h-4 w-4']"
                 aria-hidden="true" />
-              {{ item.name }}
+              <p class="truncate">{{ item.name }}</p>
             </div>
           </nav>
         </div>
@@ -164,8 +164,8 @@ const sidebarOpen = ref(false)
             </div>
           </div>
         </div>
-        <div class="w-full">
-          <div class="max-w-4xl mx-auto px-8 pb-8">
+        <div class="w-full" :class="route.params.id ? 'border-t' : ''">
+          <div class="max-w-4xl mx-auto px-8 pb-8" :class="route.params.id ? 'pt-8' : ''">
             <div class="border rounded-lg px-6 py-4 flex items-center">
               <textarea placeholder="Send a message"
                 class="m-0 w-full resize-none border-0 bg-transparent p-0 pr-10 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pr-12 pl-3 md:pl-0"
