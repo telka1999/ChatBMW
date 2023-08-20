@@ -6,7 +6,11 @@ import {
   Bars3Icon,
   PlusIcon,
   XMarkIcon,
+  PaperAirplaneIcon,
 } from '@heroicons/vue/24/outline'
+import { RouterView, useRoute } from 'vue-router';
+const route = useRoute()
+console.log("home view", route.params.id);
 
 const navigation = [
   { name: 'Jak zainstalować światła przeciwmgielne ? wersja USA', current: true },
@@ -83,7 +87,6 @@ const sidebarOpen = ref(false)
       </Dialog>
     </TransitionRoot>
     <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
-      <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white">
         <div class="py-4">
           <div class="flex flex-shrink-0 items-center px-2">
@@ -130,8 +133,48 @@ const sidebarOpen = ref(false)
           <Bars3Icon class="h-6 w-6" aria-hidden="true" />
         </button>
       </div>
-      <main class="flex-1">
-        
+      <main class="h-screen flex flex-col justify-between">
+        <RouterView />
+        <div v-if="!route.params.id" class="h-full flex flex-col justify-between items-center">
+          <div class="mt-20">
+            <h1 class="text-4xl font-semibold text-gray-300">Chat<span class="text-blue-300">BMW</span></h1>
+          </div>
+          <div class="w-full mb-6">
+            <div class="px-8 grid grid-cols-2 gap-3 max-w-4xl mx-auto">
+              <div
+                class="relative flex items-center text-sm border p-4 rounded-lg shadow text-gray-500 hover:text-gray-900 cursor-pointer">
+                <p class="truncate mr-4">Jak zainstalować światła przeciwmgielne ? wersja USA</p>
+                <PaperAirplaneIcon class="h-4 cursor-pointer absolute right-4" />
+              </div>
+              <div
+                class="relative flex items-center text-sm border p-4 rounded-lg shadow text-gray-500 hover:text-gray-900 cursor-pointer">
+                <p class="truncate mr-4">Jak zainstalować światła przeciwmgielne ? wersja USA</p>
+                <PaperAirplaneIcon class="h-4 cursor-pointer absolute right-4" />
+              </div>
+              <div
+                class="relative flex items-center text-sm border p-4 rounded-lg shadow text-gray-500 hover:text-gray-900 cursor-pointer">
+                <p class="truncate mr-4">Jak zainstalować światła przeciwmgielne ? wersja USA</p>
+                <PaperAirplaneIcon class="h-4 cursor-pointer absolute right-4" />
+              </div>
+              <div
+                class="relative flex items-center text-sm border p-4 rounded-lg shadow text-gray-500 hover:text-gray-900 cursor-pointer">
+                <p class="truncate mr-4">Jak zainstalować światła przeciwmgielne ? wersja USA</p>
+                <PaperAirplaneIcon class="h-4 cursor-pointer absolute right-4" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-full">
+          <div class="max-w-4xl mx-auto px-8 pb-8">
+            <div class="border rounded-lg px-6 py-4 flex items-center">
+              <textarea placeholder="Send a message"
+                class="m-0 w-full resize-none border-0 bg-transparent p-0 pr-10 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pr-12 pl-3 md:pl-0"
+                style="max-height: 200px; height: 24px; overflow-y: hidden;" tabindex="0" name="prompt" id="prompt"
+                rows="1"></textarea>
+              <PaperAirplaneIcon class="h-6 cursor-pointer text-gray-500 hover:text-gray-900" />
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   </div>
