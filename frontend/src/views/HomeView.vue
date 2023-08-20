@@ -13,8 +13,6 @@ import { RouterView, useRoute, RouterLink } from 'vue-router';
 import { useAuth0 } from '@auth0/auth0-vue';
 const { logout } = useAuth0()
 const route = useRoute()
-console.log("home view", route.params.id);
-
 const navigation = [
   { id: "1", name: 'Jak zainstalować światła przeciwmgielne ? wersja USA' },
   { id: "2", name: 'BMW F10 520D ICMQL D019AB oraz D0157A co oznacza?' },
@@ -80,7 +78,7 @@ const sidebarOpen = ref(false)
               </div>
               <div class="flex flex-shrink-0 border-t border-gray-200 p-2">
                 <div class="cursor-pointer w-full group block flex-shrink-0 p-2 rounded-lg hover:bg-gray-50">
-                  <Menu as="div">
+                  <Menu as="div" class="w-full">
                     <transition enter-active-class="transition ease-out duration-100"
                       enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
                       leave-active-class="transition ease-in duration-75"
@@ -141,7 +139,7 @@ const sidebarOpen = ref(false)
           </nav>
         </div>
         <div class="flex flex-shrink-0 border-t border-gray-200 p-2">
-          <Menu as="div">
+          <Menu as="div" class="w-full">
             <transition enter-active-class="transition ease-out duration-100"
               enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
               leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
