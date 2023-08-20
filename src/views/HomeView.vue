@@ -1,25 +1,36 @@
 <script setup>
 import { ref } from 'vue'
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { Dialog, DialogPanel, TransitionChild, TransitionRoot, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import {
   WrenchScrewdriverIcon,
   Bars3Icon,
   PlusIcon,
   XMarkIcon,
   PaperAirplaneIcon,
+  ArrowRightOnRectangleIcon,
 } from '@heroicons/vue/24/outline'
-import { RouterView, useRoute } from 'vue-router';
+import { RouterView, useRoute, RouterLink } from 'vue-router';
+import { useAuth0 } from '@auth0/auth0-vue';
+const { logout } = useAuth0()
 const route = useRoute()
 console.log("home view", route.params.id);
 
 const navigation = [
-  { name: 'Jak zainstalować światła przeciwmgielne ? wersja USA', current: true },
-  { name: 'BMW F10 520D ICMQL D019AB oraz D0157A co oznacza?', current: false },
-  { name: 'Kodowanie licznika e38 750i 2001r.', current: false },
-  { name: 'po wymianie na mask 2 w e90 nie działają przyciski od radia', current: false },
-  { name: 'Prostownik, zasilacz do diagnostyki, programowania, kodowa.', current: false },
-  { name: 'BMW e46 - Moduly FTM i BTM - aktywacja skladanych lusterek', current: false },
+  { id: "1", name: 'Jak zainstalować światła przeciwmgielne ? wersja USA' },
+  { id: "2", name: 'BMW F10 520D ICMQL D019AB oraz D0157A co oznacza?' },
+  { id: "3", name: 'Kodowanie licznika e38 750i 2001r.' },
+  { id: "4", name: 'po wymianie na mask 2 w e90 nie działają przyciski od radia' },
+  { id: "5", name: 'Prostownik, zasilacz do diagnostyki, programowania, kodowa.' },
+  { id: "6", name: 'BMW e46 - Moduly FTM i BTM - aktywacja skladanych lusterek' },
 ]
+
+const handleLogout = () => {
+  logout({
+    logoutParams: {
+      returnTo: window.location.origin
+    }
+  })
+}
 
 const sidebarOpen = ref(false)
 </script>
@@ -51,34 +62,55 @@ const sidebarOpen = ref(false)
               </TransitionChild>
               <div class="h-0 flex-1 overflow-y-auto pt-5 pb-4">
                 <div class="flex flex-shrink-0 items-center px-2">
-                  <div
+                  <RouterLink to="/"
                     class="cursor-pointer flex items-center gap-2 border rounded-lg w-full px-2 py-3 hover:border-gray-300 hover:bg-gray-50">
                     <PlusIcon class="h-5" />
                     <div>New chat</div>
-                  </div>
+                  </RouterLink>
                 </div>
                 <nav class="mt-5 space-y-1 px-2">
-                  <div v-for="item in navigation" :key="item.name"
-                    :class="[item.current ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center px-2 py-3 text-base rounded-md']">
+                  <RouterLink :to="item.id" v-for="item in navigation" :key="item.name"
+                    :class="[item.id === route.params.id ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center px-2 py-3 text-base rounded-md']">
                     <component :is="WrenchScrewdriverIcon"
-                      :class="[item.current ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-500', 'mr-4 flex-shrink-0 h-5 w-5']"
+                      :class="[item.id === route.params.id ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-500', 'mr-4 flex-shrink-0 h-5 w-5']"
                       aria-hidden="true" />
                     <p class="truncate">{{ item.name }}</p>
-                  </div>
+                  </RouterLink>
                 </nav>
               </div>
               <div class="flex flex-shrink-0 border-t border-gray-200 p-2">
                 <div class="cursor-pointer w-full group block flex-shrink-0 p-2 rounded-lg hover:bg-gray-50">
-                  <div class="flex items-center">
-                    <div>
-                      <img class="inline-block h-10 w-10 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt="" />
-                    </div>
-                    <div class="ml-3">
-                      <p class="text-base truncate text-gray-700 group-hover:text-gray-900">telka199909@gmail.com</p>
-                    </div>
-                  </div>
+                  <Menu as="div">
+                    <transition enter-active-class="transition ease-out duration-100"
+                      enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
+                      leave-active-class="transition ease-in duration-75"
+                      leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+                      <MenuItems style="width: 304px;"
+                        class="absolute left-2 bottom-20 z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div class="py-1">
+                          <MenuItem v-slot="{ active }" @click="handleLogout">
+                          <div
+                            :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'cursor-pointer px-4 py-2 flex gap-2 items-center']">
+                            <ArrowRightOnRectangleIcon class="h-5" />Log
+                            out
+                          </div>
+                          </MenuItem>
+                        </div>
+                      </MenuItems>
+                    </transition>
+                    <MenuButton class="cursor-pointer group block w-full flex-shrink-0 rounded-lg p-2 hover:bg-gray-50">
+                      <div class="flex items-center">
+                        <div>
+                          <img class="inline-block h-10 w-10 rounded-full"
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            alt="" />
+                        </div>
+                        <div class="ml-3">
+                          <p class="truncate text-gray-700 group-hover:text-gray-900">telka199909@gmail.com</p>
+                        </div>
+                      </div>
+                    </MenuButton>
+                  </Menu>
                 </div>
               </div>
             </DialogPanel>
@@ -90,37 +122,56 @@ const sidebarOpen = ref(false)
       <div class="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white">
         <div class="py-4">
           <div class="flex flex-shrink-0 items-center px-2">
-            <div
+            <RouterLink to="/"
               class="cursor-pointer flex items-center gap-2 border rounded-lg w-full px-2 py-3 hover:border-gray-300 hover:bg-gray-50">
               <PlusIcon class="h-4" />
               <div class="text-sm">New chat</div>
-            </div>
+            </RouterLink>
           </div>
         </div>
         <div class="flex flex-1 flex-col overflow-y-auto py-4 border-t">
           <nav class="flex-1 space-y-1 bg-white px-2">
-            <div v-for="item in navigation" :key="item.name"
-              :class="[item.current ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center px-2 py-3 text-sm rounded-md']">
+            <RouterLink :to="item.id" v-for="item in navigation" :key="item.name"
+              :class="[item.id === route.params.id ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center px-2 py-3 text-sm rounded-md']">
               <component :is="WrenchScrewdriverIcon"
-                :class="[item.current ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-500', 'mr-3 flex-shrink-0 h-4 w-4']"
+                :class="[item.id === route.params.id ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-500', 'mr-3 flex-shrink-0 h-4 w-4']"
                 aria-hidden="true" />
               <p class="truncate">{{ item.name }}</p>
-            </div>
+            </RouterLink>
           </nav>
         </div>
         <div class="flex flex-shrink-0 border-t border-gray-200 p-2">
-          <div class="cursor-pointer group block w-full flex-shrink-0 rounded-lg p-2 hover:bg-gray-50">
-            <div class="flex items-center">
-              <div>
-                <img class="inline-block h-9 w-9 rounded-full"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt="" />
+          <Menu as="div">
+            <transition enter-active-class="transition ease-out duration-100"
+              enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
+              leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
+              leave-to-class="transform opacity-0 scale-95">
+              <MenuItems
+                class="absolute left-2 bottom-16 z-10 mt-2 w-60 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div class="py-1">
+                  <MenuItem v-slot="{ active }" @click="handleLogout">
+                  <div
+                    :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'px-4 py-2 flex gap-2 items-center text-sm cursor-pointer']">
+                    <ArrowRightOnRectangleIcon class="h-4" />Log
+                    out
+                  </div>
+                  </MenuItem>
+                </div>
+              </MenuItems>
+            </transition>
+            <MenuButton class="cursor-pointer group block w-full flex-shrink-0 rounded-lg p-2 hover:bg-gray-50">
+              <div class="flex items-center">
+                <div>
+                  <img class="inline-block h-9 w-9 rounded-full"
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    alt="" />
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm truncate text-gray-700 group-hover:text-gray-900">telka199909@gmail.com</p>
+                </div>
               </div>
-              <div class="ml-3">
-                <p class="text-sm truncate text-gray-700 group-hover:text-gray-900">telka199909@gmail.com</p>
-              </div>
-            </div>
-          </div>
+            </MenuButton>
+          </Menu>
         </div>
       </div>
     </div>
