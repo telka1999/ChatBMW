@@ -11,8 +11,9 @@ import {
 } from '@heroicons/vue/24/outline'
 import { RouterView, useRoute, RouterLink } from 'vue-router';
 import { useAuth0 } from '@auth0/auth0-vue';
-const { logout } = useAuth0()
+const { logout, getAccessTokenSilently } = useAuth0()
 const route = useRoute()
+const sidebarOpen = ref(false)
 const navigation = [
   { id: "1", name: 'Jak zainstalować światła przeciwmgielne ? wersja USA' },
   { id: "2", name: 'BMW F10 520D ICMQL D019AB oraz D0157A co oznacza?' },
@@ -30,7 +31,18 @@ const handleLogout = () => {
   })
 }
 
-const sidebarOpen = ref(false)
+const fetchProtectedAPI = async () => {
+  const token = await getAccessTokenSilently()
+  const res = await fetch("/api/chat", {
+    method: 'POST',
+    redirect: 'follow',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    }
+  })
+  const data = await res.json()
+  console.log(data);
+}
 </script>
 <template>
   <div>
@@ -220,7 +232,8 @@ const sidebarOpen = ref(false)
                 class="m-0 w-full resize-none border-0 bg-transparent p-0 pr-10 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pr-12 pl-3 md:pl-0"
                 style="max-height: 200px; height: 24px; overflow-y: hidden;" tabindex="0" name="prompt" id="prompt"
                 rows="1"></textarea>
-              <PaperAirplaneIcon class="h-6 cursor-pointer text-gray-500 hover:text-gray-900" />
+              <PaperAirplaneIcon @click="fetchProtectedAPI"
+                class="h-6 cursor-pointer text-gray-500 hover:text-gray-900" />
             </div>
           </div>
         </div>

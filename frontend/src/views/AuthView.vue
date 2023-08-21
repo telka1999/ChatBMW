@@ -11,6 +11,14 @@ const handleSignup = () => {
     }
   })
 }
+const fetchProtectedAPI = async () => {
+  const res = await fetch("/api/chat", {
+    method: 'POST',
+    redirect: 'follow'
+  })
+  const data = await res.json()
+  console.log(data);
+}
 </script>
 
 <template>
@@ -35,6 +43,7 @@ const handleSignup = () => {
           </div>
         </div>
       </div>
+      <button @click="fetchProtectedAPI">Protected API</button>
     </div>
     <div class="relative hidden w-0 flex-1 lg:block">
       <img class="absolute inset-0 h-full w-full object-cover" src="../assets/pexels-jay-pizzle-3849554.jpg" alt="" />
