@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import chatRouter from "./routes/chatRoutes.js";
 import { auth } from "express-oauth2-jwt-bearer";
+import sequelize from "./config/db.js";
 dotenv.config();
 const port = process.env.PORT || 5000;
 
@@ -21,5 +22,7 @@ app.use("/api", checkJwt, chatRouter);
 app.get("/", (req, res) => {
   res.send("API is running....");
 });
+
+sequelize.sync();
 
 app.listen(port, () => console.log(`Server started on post ${port}`));
