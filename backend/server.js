@@ -17,12 +17,12 @@ const checkJwt = auth({
   tokenSigningAlg: process.env.AUTH0_ALG,
 });
 
-app.use("/api", checkJwt, chatRouter);
+app.use("/api", chatRouter);
 
 app.get("/", (req, res) => {
   res.send("API is running....");
 });
 
-sequelize.sync();
+sequelize.sync({ alter: true });
 
 app.listen(port, () => console.log(`Server started on post ${port}`));
