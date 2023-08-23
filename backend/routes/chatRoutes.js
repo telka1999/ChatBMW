@@ -7,7 +7,7 @@ import {
 
 const router = express.Router();
 
-router.get("/chat/:userId", getChats);
-router.route("/chat").post(createChat).delete(deleteChat);
+router.get("/:userId", getChats);
+router.route("/").post(createChat).delete(deleteChat);
 
 export default router;
