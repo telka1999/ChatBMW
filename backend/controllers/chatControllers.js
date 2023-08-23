@@ -1,4 +1,5 @@
 import Chat from "../models/chatModel.js";
+import Message from "../models/messageModel.js";
 
 // Add Chat | POST | Private
 
@@ -9,7 +10,13 @@ const createChat = async (req, res) => {
       user_id: userId,
       title,
     });
-    res.status(200).json(newChat);
+    const personQuestion = await Message.create({
+      user_id: userId,
+      chat_id: newChat.id,
+      message: newChat.title,
+      role: "PERSON",
+    });
+    res.status(200).json(personQuestion);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
