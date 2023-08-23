@@ -4,6 +4,7 @@ import cors from "cors";
 import chatRouter from "./routes/chatRoutes.js";
 import messageRouter from "./routes/messageRoutes.js";
 import { auth } from "express-oauth2-jwt-bearer";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import sequelize from "./config/db.js";
 dotenv.config();
 const port = process.env.PORT || 5000;
@@ -26,5 +27,8 @@ app.get("/", (req, res) => {
 });
 
 sequelize.sync({ alter: true });
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, () => console.log(`Server started on post ${port}`));
