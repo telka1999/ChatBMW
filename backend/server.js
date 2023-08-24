@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
   res.send("API is running....");
 });
 
-sequelize.sync({ alter: true });
+sequelize.sync();
 
 app.use(notFound);
 app.use(errorHandler);
