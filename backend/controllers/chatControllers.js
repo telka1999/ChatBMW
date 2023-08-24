@@ -1,5 +1,6 @@
 import Chat from "../models/chatModel.js";
 import Message from "../models/messageModel.js";
+import openai from "../config/openai.js";
 
 // Add Chat | POST | Private
 
@@ -16,7 +17,13 @@ const createChat = async (req, res) => {
       message: newChat.title,
       role: "PERSON",
     });
-    res.status(200).json(personQuestion);
+    const completion = await openai.chat.completions.create({
+      messages: [{ role: "system", content: "This is a test" }],
+      model: "gpt-3.5-turbo",
+    });
+    res
+      .status(200)
+      .json({ personQuestion, gptAnswer: completion.choices.messages });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -38,8 +45,9 @@ const getChats = async (req, res) => {
 const deleteChat = async (req, res) => {
   const { id } = req.body;
   const deleteChat = await Chat.destroy({ where: { id } });
+  const deleteMessages = await Message.destroy({ where: { chat_id: id } });
   if (deleteChat) {
-    res.status(200).json(deleteChat);
+    res.status(200).json({ deleteChat, deleteMessages });
   } else {
     res.status(404).json({ message: "Messages not found" });
   }
