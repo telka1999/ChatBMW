@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import {
   WrenchScrewdriverIcon,
@@ -16,6 +16,8 @@ const route = useRoute()
 const router = useRouter()
 const sidebarOpen = ref(false)
 const prompt = ref("")
+let parmsId
+let chats = ref([])
 const navigation = [
   { id: "22", name: 'Jak zainstalować światła przeciwmgielne ? wersja USA' },
   { id: "23", name: 'BMW F10 520D ICMQL D019AB oraz D0157A co oznacza?' },
@@ -48,13 +50,29 @@ const fetchProtectedAPI = async () => {
     }),
   })
   const data = await res.json()
-  console.log(data);
   if (data) {
     prompt.value = ""
     router.push({ path: String(data.chatId) })
   }
 }
 
+const redirectToChat = (id) => {
+  router.push({ path: String(id) })
+}
+
+watchEffect(async () => {
+  parmsId = route.params.id
+  const id = user.value.sub
+  const token = await getAccessTokenSilently()
+  const res = await fetch(`/api/chat/${id}`, {
+    method: 'GET',
+    redirect: 'follow',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+  chats.value = await res.json()
+})
 </script>
 <template>
   <div>
@@ -91,13 +109,13 @@ const fetchProtectedAPI = async () => {
                   </RouterLink>
                 </div>
                 <nav class="mt-5 space-y-1 px-2">
-                  <RouterLink :to="item.id" v-for="item in navigation" :key="item.name"
-                    :class="[item.id === route.params.id ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center px-2 py-3 text-base rounded-md']">
+                  <div @click="redirectToChat(item.id)" v-for="(item, i) in chats" :key="i"
+                    :class="[item.id == parmsId ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center px-2 py-3 text-base rounded-md']">
                     <component :is="WrenchScrewdriverIcon"
-                      :class="[item.id === route.params.id ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-500', 'mr-4 flex-shrink-0 h-5 w-5']"
+                      :class="[item.id == parmsId ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-500', 'mr-4 flex-shrink-0 h-5 w-5']"
                       aria-hidden="true" />
-                    <p class="truncate">{{ item.name }}</p>
-                  </RouterLink>
+                    <p class="truncate">{{ item.title }}</p>
+                  </div>
                 </nav>
               </div>
               <div class="flex flex-shrink-0 border-t border-gray-200 p-2">
@@ -153,13 +171,13 @@ const fetchProtectedAPI = async () => {
         </div>
         <div class="flex flex-1 flex-col overflow-y-auto py-4 border-t">
           <nav class="flex-1 space-y-1 bg-white px-2">
-            <RouterLink :to="item.id" v-for="item in navigation" :key="item.name"
-              :class="[item.id === route.params.id ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center px-2 py-3 text-sm rounded-md']">
+            <div @click="redirectToChat(item.id)" v-for="(item, i) in chats" :key="i"
+              :class="[item.id == parmsId ? 'bg-gray-100 text-gray-900 font-medium' : 'cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center px-2 py-3 text-sm rounded-md']">
               <component :is="WrenchScrewdriverIcon"
-                :class="[item.id === route.params.id ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-500', 'mr-3 flex-shrink-0 h-4 w-4']"
+                :class="[item.id == parmsId ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-500', 'mr-3 flex-shrink-0 h-4 w-4']"
                 aria-hidden="true" />
-              <p class="truncate">{{ item.name }}</p>
-            </RouterLink>
+              <p class="truncate">{{ item.title }}</p>
+            </div>
           </nav>
         </div>
         <div class="flex flex-shrink-0 border-t border-gray-200 p-2">
@@ -207,7 +225,7 @@ const fetchProtectedAPI = async () => {
         </button>
       </div>
       <main class="h-screen flex flex-col justify-between">
-        <RouterView :navigation="navigation"/>
+        <RouterView :navigation="navigation" />
         <div v-if="!route.params.id" class="h-full flex flex-col justify-between items-center">
           <div class="mt-20">
             <h1 class="text-4xl font-semibold text-gray-300">Chat<span class="text-blue-300">BMW</span></h1>

@@ -6,7 +6,7 @@ const { getAccessTokenSilently, user } = useAuth0()
 const { navigation } = defineProps({
     navigation
 })
-console.log(navigation);
+//console.log(navigation);
 const route = useRoute()
 let messages = ref([])
 watchEffect(async () => {
@@ -20,7 +20,6 @@ watchEffect(async () => {
         },
     })
     messages.value = await res.json()
-    console.log(messages.value);
 })
 </script>
 
