@@ -20,9 +20,9 @@ const checkJwt = auth({
   tokenSigningAlg: process.env.AUTH0_ALG,
 });
 
-app.use("/api/chat", chatRouter);
-app.use("/api/message", messageRouter);
-app.use("/api/openai", openaiRouter);
+app.use("/api/chat", checkJwt, chatRouter);
+app.use("/api/message", checkJwt, messageRouter);
+app.use("/api/openai", checkJwt, openaiRouter);
 
 app.get("/", (req, res) => {
   res.send("API is running....");

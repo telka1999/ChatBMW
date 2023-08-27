@@ -1,6 +1,5 @@
 import Chat from "../models/chatModel.js";
 import Message from "../models/messageModel.js";
-import openai from "../config/openai.js";
 
 // Add Chat | POST | Private
 
@@ -17,13 +16,10 @@ const createChat = async (req, res) => {
       message: newChat.title,
       role: "PERSON",
     });
-    const completion = await openai.chat.completions.create({
-      messages: [{ role: "system", content: "This is a test" }],
-      model: "gpt-3.5-turbo",
+    res.status(200).json({
+      chatId: newChat.id,
+      personQuestion,
     });
-    res
-      .status(200)
-      .json({ personQuestion, gptAnswer: completion.choices.messages });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

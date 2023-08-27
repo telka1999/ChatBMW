@@ -9,18 +9,20 @@ import {
   PaperAirplaneIcon,
   ArrowRightOnRectangleIcon,
 } from '@heroicons/vue/24/outline'
-import { RouterView, useRoute, RouterLink } from 'vue-router';
+import { RouterView, useRoute, RouterLink, useRouter } from 'vue-router';
 import { useAuth0 } from '@auth0/auth0-vue';
-const { logout, getAccessTokenSilently } = useAuth0()
+const { logout, getAccessTokenSilently, user } = useAuth0()
 const route = useRoute()
+const router = useRouter()
 const sidebarOpen = ref(false)
+const prompt = ref("")
 const navigation = [
-  { id: "1", name: 'Jak zainstalować światła przeciwmgielne ? wersja USA' },
-  { id: "2", name: 'BMW F10 520D ICMQL D019AB oraz D0157A co oznacza?' },
-  { id: "3", name: 'Kodowanie licznika e38 750i 2001r.' },
-  { id: "4", name: 'po wymianie na mask 2 w e90 nie działają przyciski od radia' },
-  { id: "5", name: 'Prostownik, zasilacz do diagnostyki, programowania, kodowa.' },
-  { id: "6", name: 'BMW e46 - Moduly FTM i BTM - aktywacja skladanych lusterek' },
+  { id: "22", name: 'Jak zainstalować światła przeciwmgielne ? wersja USA' },
+  { id: "23", name: 'BMW F10 520D ICMQL D019AB oraz D0157A co oznacza?' },
+  { id: "23", name: 'Kodowanie licznika e38 750i 2001r.' },
+  { id: "24", name: 'po wymianie na mask 2 w e90 nie działają przyciski od radia' },
+  { id: "26", name: 'Prostownik, zasilacz do diagnostyki, programowania, kodowa.' },
+  { id: "25", name: 'BMW e46 - Moduly FTM i BTM - aktywacja skladanych lusterek' },
 ]
 
 const handleLogout = () => {
@@ -38,11 +40,21 @@ const fetchProtectedAPI = async () => {
     redirect: 'follow',
     headers: {
       'Authorization': `Bearer ${token}`,
-    }
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId: user._rawValue.sub,
+      title: prompt.value
+    }),
   })
   const data = await res.json()
   console.log(data);
+  if (data) {
+    prompt.value = ""
+    router.push({ path: String(data.chatId) })
+  }
 }
+
 </script>
 <template>
   <div>
@@ -195,7 +207,7 @@ const fetchProtectedAPI = async () => {
         </button>
       </div>
       <main class="h-screen flex flex-col justify-between">
-        <RouterView />
+        <RouterView :navigation="navigation"/>
         <div v-if="!route.params.id" class="h-full flex flex-col justify-between items-center">
           <div class="mt-20">
             <h1 class="text-4xl font-semibold text-gray-300">Chat<span class="text-blue-300">BMW</span></h1>
@@ -227,14 +239,15 @@ const fetchProtectedAPI = async () => {
         </div>
         <div class="w-full" :class="route.params.id ? 'border-t' : ''">
           <div class="max-w-4xl mx-auto px-8 pb-8" :class="route.params.id ? 'pt-8' : ''">
-            <div class="border rounded-lg px-6 py-4 flex items-center">
-              <textarea placeholder="Send a message"
+            <form @submit.prevent="fetchProtectedAPI" class="border rounded-lg px-6 py-4 flex items-center">
+              <input v-model="prompt" placeholder="Send a message"
                 class="m-0 w-full resize-none border-0 bg-transparent p-0 pr-10 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pr-12 pl-3 md:pl-0"
                 style="max-height: 200px; height: 24px; overflow-y: hidden;" tabindex="0" name="prompt" id="prompt"
-                rows="1"></textarea>
-              <PaperAirplaneIcon @click="fetchProtectedAPI"
-                class="h-6 cursor-pointer text-gray-500 hover:text-gray-900" />
-            </div>
+                rows="1" />
+              <button type="submit">
+                <PaperAirplaneIcon class="h-6 cursor-pointer text-gray-500 hover:text-gray-900" />
+              </button>
+            </form>
           </div>
         </div>
       </main>
