@@ -20,16 +20,9 @@ const sidebarOpen = ref(false)
 const prompt = ref("")
 const open = ref(false)
 const currentChat = ref(null)
+const loading = ref(false)
 let parmsId
 let chats = ref([])
-const navigation = [
-  { id: "22", name: 'Jak zainstalować światła przeciwmgielne ? wersja USA' },
-  { id: "23", name: 'BMW F10 520D ICMQL D019AB oraz D0157A co oznacza?' },
-  { id: "23", name: 'Kodowanie licznika e38 750i 2001r.' },
-  { id: "24", name: 'po wymianie na mask 2 w e90 nie działają przyciski od radia' },
-  { id: "26", name: 'Prostownik, zasilacz do diagnostyki, programowania, kodowa.' },
-  { id: "25", name: 'BMW e46 - Moduly FTM i BTM - aktywacja skladanych lusterek' },
-]
 
 const handleLogout = () => {
   logout({
@@ -39,25 +32,34 @@ const handleLogout = () => {
   })
 }
 
-const fetchProtectedAPI = async () => {
-  const token = await getAccessTokenSilently()
-  const res = await fetch("/api/chat", {
-    method: 'POST',
-    redirect: 'follow',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      userId: user._rawValue.sub,
-      title: prompt.value
-    }),
-  })
-  const data = await res.json()
-  if (data) {
-    sidebarOpen.value = false
-    prompt.value = ""
-    router.push({ path: String(data.chatId) })
+const creatingChat = async () => {
+  if (!loading.value) {
+    loading.value = true
+    try {
+      const token = await getAccessTokenSilently()
+      const res = await fetch("/api/chat", {
+        method: 'POST',
+        redirect: 'follow',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: user._rawValue.sub,
+          title: prompt.value
+        }),
+      })
+      const data = await res.json()
+      if (data) {
+        loading.value = false
+        sidebarOpen.value = false
+        prompt.value = ""
+        router.push({ path: String(data.chatId) })
+      }
+    } catch (error) {
+      loading.value = false
+      console.log(error.message);
+    }
   }
 }
 
@@ -105,7 +107,7 @@ watchEffect(async () => {
   })
   chats.value = await res.json()
   const openedChat = chats.value.find((chat) => {
-    return chat.id !== id
+    return chat.id === Number(parmsId)
   })
   currentChat.value = openedChat
 })
@@ -313,7 +315,7 @@ watchEffect(async () => {
         </button>
       </div>
       <main class="h-screen flex flex-col justify-between">
-        <RouterView :navigation="navigation" />
+        <RouterView :sidebarOpen="sidebarOpen" />
         <div v-if="!route.params.id" class="h-full flex flex-col justify-between items-center">
           <div class="mt-20">
             <h1 class="text-4xl font-semibold text-gray-300">Chat<span class="text-blue-300">BMW</span></h1>
@@ -343,15 +345,22 @@ watchEffect(async () => {
             </div>
           </div>
         </div>
-        <div class="w-full" :class="route.params.id ? 'border-t' : ''">
-          <div class="max-w-4xl mx-auto px-8 pb-8" :class="route.params.id ? 'pt-8' : ''">
-            <form @submit.prevent="fetchProtectedAPI" class="border rounded-lg px-6 py-4 flex items-center">
+        <div v-if="!route.params.id" class="w-full">
+          <div class="max-w-4xl mx-auto px-8 pb-8">
+            <form @submit.prevent="creatingChat()" class="border rounded-lg px-6 py-4 flex items-center">
               <input v-model="prompt" placeholder="Send a message"
                 class="m-0 w-full resize-none border-0 bg-transparent p-0 pr-10 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pr-12 pl-3 md:pl-0"
                 style="max-height: 200px; height: 24px; overflow-y: hidden;" tabindex="0" name="prompt" id="prompt"
                 rows="1" />
               <button type="submit">
-                <PaperAirplaneIcon class="h-6 cursor-pointer text-gray-500 hover:text-gray-900" />
+                <svg v-if="loading" class="w-6 h-6 text-blue-600 animate-spin" fill="none" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    fill="currentColor"></path>
+                </svg>
+                <PaperAirplaneIcon v-if="!loading" class="h-6 cursor-pointer text-gray-500 hover:text-gray-900" />
               </button>
             </form>
           </div>

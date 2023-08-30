@@ -15,8 +15,8 @@ const Message = sequelize.define("messages", {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  role: {
-    type: DataTypes.STRING,
+  answer: {
+    type: DataTypes.TEXT,
     allowNull: false,
   },
 });

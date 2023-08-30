@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import chatRouter from "./routes/chatRoutes.js";
 import messageRouter from "./routes/messageRoutes.js";
-import openaiRouter from "./routes/openaiRoutes.js";
 import { auth } from "express-oauth2-jwt-bearer";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import sequelize from "./config/db.js";
@@ -22,7 +21,6 @@ const checkJwt = auth({
 
 app.use("/api/chat", checkJwt, chatRouter);
 app.use("/api/message", checkJwt, messageRouter);
-app.use("/api/openai", checkJwt, openaiRouter);
 
 app.get("/", (req, res) => {
   res.send("API is running....");
