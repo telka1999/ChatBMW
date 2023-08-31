@@ -7,6 +7,7 @@ const sequelize = new Sequelize({
   password: process.env.RAILWAY_MYSQL_PASSWORD,
   database: process.env.RAILWAY_MYSQL_DATABASE,
   dialect: "mysql",
+  dialectModule: require('mysql2'),
   port: process.env.RAILWAY_MYSQL_PORT,
   host: process.env.RAILWAY_MYSQL_HOST,
 });
