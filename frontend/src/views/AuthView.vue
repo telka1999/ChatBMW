@@ -17,8 +17,7 @@ const handleSignup = () => {
   <div class="flex h-screen">
     <div class="relative flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
       <div class="absolute top-12 flex items-center gap-1">
-        <h1 class="font-semibold text-xl">Chat<span class="text-blue-600">BMW</span></h1>
-        <img class="h-6" src="../assets/4140436_bmw_logo_icon.png" alt="">
+        <h1 class="font-semibold text-xl">Chat<span class="text-blue-600">GPT</span></h1>
       </div>
       <div class="mx-auto w-full max-w-sm lg:w-96">
         <div class="flex justify-center">
@@ -37,7 +36,7 @@ const handleSignup = () => {
       </div>
     </div>
     <div class="relative hidden w-0 flex-1 lg:block">
-      <img class="absolute inset-0 h-full w-full object-cover" src="../assets/pexels-jay-pizzle-3849554.jpg" alt="" />
+      <img class="absolute inset-0 h-full w-full object-cover" src="../assets/5559852.jpg" alt="" />
     </div>
   </div>
 </template>

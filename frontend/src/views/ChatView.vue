@@ -83,14 +83,13 @@ watchEffect(async () => {
         <div v-for="(message, i) in messages" :key="i">
             <div>
                 <div class="max-w-4xl mx-auto px-8 py-6 flex gap-6">
-                    <img class="inline-block h-10 w-10 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt="" />
+                    <img class="inline-block h-10 w-10 rounded-full" :src="user.picture" alt="" />
                     <div>{{ message.message }}</div>
                 </div>
                 <div class="bg-gray-50">
                     <div class="max-w-4xl mx-auto px-8 py-6 flex gap-6">
-                        <img class="inline-block h-10 w-10 rounded-full" src="../assets/4140436_bmw_logo_icon.png" alt="">
+                        <img class="inline-block h-10 w-10 p-1.5 rounded-full bg-blue-600"
+                            src="../assets/icons8-chatgpt-240.png" alt="">
                         <div>{{ message.answer ? message.answer : "Loading . . ." }}</div>
                     </div>
                 </div>
