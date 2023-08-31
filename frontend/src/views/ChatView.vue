@@ -84,13 +84,13 @@ watchEffect(async () => {
             <div>
                 <div class="max-w-4xl mx-auto px-8 py-6 flex gap-6">
                     <img class="inline-block h-10 w-10 rounded-full" :src="user.picture" alt="" />
-                    <div>{{ message.message }}</div>
+                    <article class="prose">{{ message.message }}</article>
                 </div>
                 <div class="bg-gray-50">
                     <div class="max-w-4xl mx-auto px-8 py-6 flex gap-6">
                         <img class="inline-block h-10 w-10 p-1.5 rounded-full bg-blue-600"
                             src="../assets/icons8-chatgpt-240.png" alt="">
-                        <div>{{ message.answer ? message.answer : "Loading . . ." }}</div>
+                        <article class="prose">{{ message.answer ? message.answer : "Loading . . ." }}</article>
                     </div>
                 </div>
             </div>
