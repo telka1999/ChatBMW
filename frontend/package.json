@@ -2,6 +2,8 @@
   "name": "chatbmw",
   "version": "0.0.0",
   "private": true,
+  "module": "NodeNext",
+  "moduleResolution": "NodeNext",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
