@@ -2,8 +2,6 @@
   "name": "chatbmw",
   "version": "0.0.0",
   "private": true,
-  "module": "NodeNext",
-  "moduleResolution": "NodeNext",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -14,6 +12,7 @@
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
     "@tailwindcss/forms": "^0.5.4",
+    "core-js": "^3.32.1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
