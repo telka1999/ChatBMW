@@ -4,13 +4,9 @@ const Auth = () => import("../views/AuthView.vue");
 const Home = () => import("../views/HomeView.vue");
 const Chat = () => import("../views/ChatView.vue");
 const router = createRouter({
+  mode: 'history',
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: "/auth",
-      name: "auth",
-      component: Auth,
-    },
     {
       path: "/",
       name: "home",
@@ -22,6 +18,11 @@ const router = createRouter({
           component: Chat,
         },
       ],
+    },
+    {
+      path: "/auth",
+      name: "auth",
+      component: Auth,
     },
   ],
 });

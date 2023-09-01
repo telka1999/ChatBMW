@@ -12,7 +12,7 @@ const createChat = async (req, res) => {
       title,
     });
     const completion = await openai.chat.completions.create({
-      messages: [{ role: "system", content: "This is a test" }],
+      messages: [{ role: "system", content: title }],
       model: "gpt-3.5-turbo",
     });
     const messages = await Message.create({

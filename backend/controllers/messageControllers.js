@@ -7,7 +7,7 @@ const createMessage = async (req, res) => {
   const { userId, chatId, message } = req.body;
   try {
     const completion = await openai.chat.completions.create({
-      messages: [{ role: "system", content: "This is a test" }],
+      messages: [{ role: "system", content: message }],
       model: "gpt-3.5-turbo",
     });
     const newMessage = await Message.create({
