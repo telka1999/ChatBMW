@@ -19,7 +19,7 @@ const checkJwt = auth({
   tokenSigningAlg: process.env.AUTH0_ALG,
 });
 
-app.use("/api/chat", chatRouter);
+app.use("/api/chat", checkJwt, chatRouter);
 app.use("/api/message", checkJwt, messageRouter);
 
 app.get("/", (req, res) => {

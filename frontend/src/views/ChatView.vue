@@ -29,7 +29,7 @@ const creatingMessage = async () => {
             messages.value.push({ message: prompt.value, answer: "" })
             const id = route.params.id
             const token = await getAccessTokenSilently()
-            const res = await fetch("/api/message", {
+            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/message`, {
                 method: 'POST',
                 redirect: 'follow',
                 headers: {
@@ -64,7 +64,7 @@ const creatingMessage = async () => {
 watchEffect(async () => {
     const id = route.params.id
     const token = await getAccessTokenSilently()
-    const res = await fetch(`/api/message/${id}`, {
+    const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/message/${id}`, {
         method: 'GET',
         redirect: 'follow',
         headers: {

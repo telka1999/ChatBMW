@@ -42,7 +42,7 @@ const creatingChat = async (preperd) => {
     loading.value = true
     try {
       const token = await getAccessTokenSilently()
-      const res = await fetch("/api/chat", {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/chat`, {
         method: 'POST',
         redirect: 'follow',
         headers: {
@@ -75,7 +75,7 @@ const redirectToChat = (id) => {
 
 const deleteChat = async () => {
   const token = await getAccessTokenSilently()
-  const res = await fetch("/api/chat", {
+  const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/chat`, {
     method: 'DELETE',
     redirect: 'follow',
     headers: {
@@ -103,7 +103,7 @@ watchEffect(async () => {
   parmsId = route.params.id
   const id = user.value.sub
   const token = await getAccessTokenSilently()
-  const res = await fetch(`/api/chat/${id}`, {
+  const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/chat/${id}`, {
     method: 'GET',
     redirect: 'follow',
     headers: {
