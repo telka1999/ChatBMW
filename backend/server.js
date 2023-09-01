@@ -1,5 +1,4 @@
 import express from "express";
-import path from "path";
 import dotenv from "dotenv";
 import cors from "cors";
 import chatRouter from "./routes/chatRoutes.js";
@@ -20,7 +19,7 @@ const checkJwt = auth({
   tokenSigningAlg: process.env.AUTH0_ALG,
 });
 
-app.use("/api/chat", checkJwt, chatRouter);
+app.use("/api/chat", chatRouter);
 app.use("/api/message", checkJwt, messageRouter);
 
 app.get("/", (req, res) => {
@@ -28,19 +27,6 @@ app.get("/", (req, res) => {
 });
 
 sequelize.sync();
-
-if (process.env.NODE_ENV === "production") {
-  const __dirname = path.resolve();
-  app.use(express.static(path.join(__dirname, "/frontend/dist")));
-
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"))
-  );
-} else {
-  app.get("/", (req, res) => {
-    res.send("API is running....");
-  });
-}
 
 app.use(notFound);
 app.use(errorHandler);
